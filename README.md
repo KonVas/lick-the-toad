@@ -26,5 +26,4 @@ The app will be installed on a server where and be accessible via a URL. However
 
 ## Technical specifications
 The system is developed as a cross platform application running on NodeJS, and JavaScript and various frameworks for sound/visuals, machine learning etc.
-Each user is broadcasting its coordinates in the "hub" and at the same time it shows its position to all connected users (see accompanying [videos](https://www.youtube.com/playlist?list=PLiCZTYIqSUAb1J-Iu4lhVwDz6ljKCVj-W)). 
 Additional details regarding the modules that the system is using can be provided upon request.
