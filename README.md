@@ -29,5 +29,5 @@ The system is developed as a cross platform application running on NodeJS, and J
 Additional details regarding the modules that the system is using can be provided upon request.
 
 ## Acknowledgments
-I would like to express my gratitude to Dan Shiffman and his invaluable tutorials pn [P5.js](https://p5js.org) and [ml5](https://ml5js.org).
+I would like to express my gratitude to Dan Shiffman and his invaluable tutorials on [P5.js](https://p5js.org) and [ml5](https://ml5js.org).
 
