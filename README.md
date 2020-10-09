@@ -8,7 +8,8 @@ This project aims to explore the idea of remoteness & isolation. It offers two M
 
 ### User Interface
 Live Input of an X/Y position of the screen using a ball object.
-[./images/ui_ctrl.png]
+
+![](./images/ui_ctrl.png)
 
 
 
