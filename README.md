@@ -8,7 +8,7 @@ This project aims to explore the idea of remoteness & isolation. It is a custom 
 
 ### User Interface
 Each user is assigned a ball object, dragging it X and Y positions are logged as training data of the model of the neural network module.
-![](./images/ui_ctrl.png)
+![](./images/user.gif)
 
 The generated output can control real time sonfication algorithms which will run independently, but it may also be used as raw material for live coding and thusly expand on other performance possibilities and interactive media making it a highly flexible and versatile project. 
 
@@ -18,8 +18,6 @@ The generated output can control real time sonfication algorithms which will run
 ![](./images/nnnet.gif)
 
 At the moment the system uses a model to train a neural network using the X and Y of the user inputs, once the model is trained the system streams out the prediction rates using [regression](https://en.wikipedia.org/wiki/Regression_analysis) and X and Y values of the cursor position. These rates are then used as raw material for real time sound synthesis algorithms implemented in SuperCollider.
-
-![](./images/ltt-nnet-sc.png)
 
 ## Technical specifications
 The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) for the implementation of machine learning capabilities. I am using SC for sonification but any other audio environment able to receive OSC messages can be used.
