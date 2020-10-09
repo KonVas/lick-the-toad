@@ -8,7 +8,7 @@ This project aims to explore the idea of remoteness & isolation. It offers two M
 
 ### User Interface
 Each user is assigned a ball object, dragging it X and Y positions are logged as training data of the model of the neural network module.
-![](./images/ui_ctrl.png =250x)
+![](./images/ui_ctrl.png | width=100)
 
 
 
