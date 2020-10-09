@@ -16,8 +16,7 @@ Other inputs, which could be used from the provided resources may include the mo
 
 The system provides a user interface through which one is able to interact with other connected users, and generate data using their location or manually. 
 
-At the moment the system uses a model to train a neural network and provide prediction output which is used as raw material for real time sound synthesis algorithms implemented in SuperCollider. 
-Specifically, the interface will offer a mouse object which can be dragged by the user, but my intention is to use location sensors (this viability can be discussed with the event organizers furtherly). 
+At the moment the system uses a model to train a neural network and provide prediction output using regression which is used as raw material for real time sound synthesis algorithms implemented in SuperCollider.
 
 While this provides a minimal approach of user interaction, no complications attached, it also provides a medium to collaborate with other logged users locally and/or remotely. 
 
