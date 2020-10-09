@@ -25,7 +25,7 @@ While this provides a minimal approach of user interaction, no complications att
 The app will be installed on a server where and be accessible via a URL. However, at the moment it runs locally using NodeJS and thus is only accessible in a local network.
 
 ## Technical specifications
-The system is developed as a cross platform application running on NodeJS, and JavaScript and SuperCollider, and [ml5](https://ml5js.org) for machine learning capabilities.
+The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) to implement machine learning capabilities.
 Additional details regarding the modules that the system is using can be provided upon request.
 
 ## Acknowledgments
