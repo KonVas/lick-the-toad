@@ -15,7 +15,7 @@ The generated output can control real time sonfication algorithms which will run
 
 ### Training
 
-![](./images/nnet.gif)
+![](./images/nnnet.gif)
 
 At the moment the system uses a model to train a neural network using the X and Y of the user inputs, once the model is trained the system streams out the prediction rates using [regression](https://en.wikipedia.org/wiki/Regression_analysis) and X and Y values of the cursor position. These rates are then used as raw material for real time sound synthesis algorithms implemented in SuperCollider.
 
