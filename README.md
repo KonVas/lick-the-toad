@@ -18,7 +18,7 @@ At the moment the system uses a model to train a neural network using the X and 
 
 ![](./images/ltt-nnet-sc.png)
 
-![](./images/Oct-09-2020 19-16-57.gif)
+![](./images/nnet.gif)
 
 ## Technical specifications
 The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) for the implementation of machine learning capabilities. I am using SC for sonification but any other audio environment able to receive OSC messages can be used.
