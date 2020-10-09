@@ -16,7 +16,7 @@ The generated output can control real time sonfication algorithms which will run
 ### Training
 At the moment the system uses a model to train a neural network using the X and Y of the user inputs, once the model is trained the system streams out the prediction rates using [regression](https://en.wikipedia.org/wiki/Regression_analysis) and X and Y values of the cursor position. These rates are then used as raw material for real time sound synthesis algorithms implemented in SuperCollider.
 
-![](./images/ltt-nnet.png)
+![](./images/ltt-nnet-sc.png)
 
 ## Technical specifications
 The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) for the implementation of machine learning capabilities. I am using SC for sonification but any other audio environment able to receive OSC messages can be used.
