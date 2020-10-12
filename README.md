@@ -22,7 +22,7 @@ At the moment the system uses a model to train a neural network using the X and 
 ### Creative Outcomes
 The system provides a hybrid mode of interaction, and can be used in many contexts. It can be installed as an interactive generative system and receice user data from remote users or local participants and can feed any audio system via OSC communication to create real time sonification algorithms.
 
-
+![](./images/audio-control-ltt.gif)
 
 ## Technical specifications
 The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) for the implementation of machine learning capabilities. I am using SC for sonification but any other audio environment able to receive OSC messages can be used.
