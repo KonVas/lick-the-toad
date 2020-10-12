@@ -1,37 +1,31 @@
-## Welcome to GitHub Pages
+# Lick the toad
+Sonification project using machine learning.
 
-You can use the [editor on GitHub](https://github.com/KonVas/lick-the-toad/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Some primary videos demonstrating the project can be found [here](https://www.youtube.com/playlist?list=PLiCZTYIqSUAb1J-Iu4lhVwDz6ljKCVj-W)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Overview of the project
+This project aims to explore the idea of remoteness & isolation. It is a custom made system that works as a digital bridge over interconnected peers across the network (currently works only locally).  This project stems from my personal interest using custom made generative systems enacting human interaction and sonification. Modus Operandi: 
 
-### Markdown
+### User Interface
+Each user is assigned a ball object, dragging it X and Y positions are logged as training data of the model of the neural network module.
+![](./images/user.gif)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+The generated output can control real time sonfication algorithms which will run independently, but it may also be used as raw material for live coding and thusly expand on other performance possibilities and interactive media making it a highly flexible and versatile project. 
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
+### Training Interface
 
-- Bulleted
-- List
+![](./images/nnet.gif)
 
-1. Numbered
-2. List
+At the moment the system uses a model to train a neural network using the X and Y of the user inputs, once the model is trained the system streams out the prediction rates using [regression](https://en.wikipedia.org/wiki/Regression_analysis) and X and Y values of the cursor position. These rates are then used as raw material for real time sound synthesis algorithms implemented in SuperCollider.
 
-**Bold** and _Italic_ and `Code` text
+### Creative Outcomes
+The system provides a hybrid mode of interaction, and can be used in many contexts. It can be installed as an interactive generative system and receice user data from remote users or local participants and can feed any audio system via OSC communication to create real time sonification algorithms.
 
-[Link](url) and ![Image](src)
-```
+![](./images/audio-control-ltt.gif)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Technical specifications
+The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) for the implementation of machine learning capabilities. I am using SC for sonification but any other audio environment able to receive OSC messages can be used.
 
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/KonVas/lick-the-toad/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+## Acknowledgments
+I would like to express my gratitude to Dan Shiffman and the creative coding communities of [P5.js](https://p5js.org) and [Ml5.js](https://ml5js.org) respectivelly.
