@@ -9,7 +9,7 @@ This project aims to explore the idea of remoteness & isolation. It is a custom 
 ### User Interface
 Each user is assigned a ball object once logged into the client interface, dragging it X and Y positions are emitted as training data of the neural network model.
 
-![this image](../images/ltt-nnet-sc.png)
+![](../images/ltt-nnet-sc.png)
 ![](../images/user.gif)
 
 ### Training Interface
