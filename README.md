@@ -1,5 +1,4 @@
 # Lick the toad
-Sonification project using machine learning.
 
 Some primary videos demonstrating the project can be found [here](https://www.youtube.com/playlist?list=PLiCZTYIqSUAb1J-Iu4lhVwDz6ljKCVj-W)
 
