@@ -9,17 +9,18 @@ This project aims to explore the idea of remoteness & isolation. It is a custom 
 ### User Interface
 Each user is assigned a ball object once logged into the client interface, dragging it X and Y positions are emitted as training data of the neural network model.
 
-![](https://github.com/KonVas/lick-the-toad/tree/main/images/user.gif)
+![](images/ui_ctrl.png)
+![](images/user.gif)
 
 ### Training Interface
 At the moment the system uses a model to train a neural network using the X and Y of the user inputs, once the model is trained the system streams out the prediction rates using [regression](https://en.wikipedia.org/wiki/Regression_analysis) and X and Y values of the cursor position. These rates are then used as raw material for real time sound synthesis algorithms implemented in SuperCollider.
 
-![](https://github.com/KonVas/lick-the-toad/tree/main/images/nnet.gif)
+![](images/nnet.gif)
 
 ### Creative Outcomes
 The generated output can control real time sonfication algorithms which can run independently installed as "on site" work or received by other performers and thus can be interpreted to other sonification ad-hoc processes. Thus, the system provides a hybrid mode of interaction, and can be used in many contexts. Data can be received by other audio platforms supporting OSC communication.
 
-![](https://github.com/KonVas/lick-the-toad/tree/main/images/audio-control-ltt.gif)
+![](images/audio-control-ltt.gif)
 
 ## Technical specifications
 The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) for the implementation of machine learning capabilities. I am using SC for sonification but any other audio environment able to receive OSC messages can be used.
