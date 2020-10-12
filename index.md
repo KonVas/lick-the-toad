@@ -9,7 +9,7 @@ This project aims to explore the idea of remoteness & isolation. It is a custom 
 ### User Interface
 Each user is assigned a ball object once logged into the client interface, dragging it X and Y positions are emitted as training data of the neural network model.
 
-![](images/ui_ctrl.png)
+![](https://github.com/KonVas/lick-the-toad/blob/main/images/ltt-nnet-sc.png)
 ![](images/user.gif)
 
 ### Training Interface
@@ -18,7 +18,7 @@ At the moment the system uses a model to train a neural network using the X and 
 ![](images/nnet.gif)
 
 ### Creative Outcomes
-The generated output can control real time sonfication algorithms which can run independently installed as "on site" work or received by other performers and thus can be interpreted to other sonification ad-hoc processes. Thus, the system provides a hybrid mode of interaction, and can be used in many contexts. Data can be received by other audio platforms supporting OSC communication.
+The generated output can control real time sonfication algorithms which can run independently as an interactive installation and "on site" work and/or received by other performers remotely and thus can be interpreted to other sonification ad-hoc processes online. Thus, the system provides a hybrid mode of interaction, and can be used in many contexts. Data can be received by other audio platforms supporting OSC communication.
 
 ![](images/audio-control-ltt.gif)
 
