@@ -9,8 +9,8 @@ This project aims to explore the idea of remoteness & isolation. It is a custom 
 ### User Interface
 Each user is assigned a ball object once logged into the client interface, dragging it X and Y positions are emitted as training data of the neural network model.
 
-![](../images/ltt-nnet-sc.png)
-![](../images/user.gif)
+![](https://github.com/KonVas/lick-the-toad/blob/main/images/user.gif?raw=true)
+![](https://github.com/KonVas/lick-the-toad/blob/main/images/ui_ctrl.png?raw=true)
 
 ### Training Interface
 At the moment the system uses a model to train a neural network using the X and Y of the user inputs, once the model is trained the system streams out the prediction rates using [regression](https://en.wikipedia.org/wiki/Regression_analysis) and X and Y values of the cursor position. These rates are then used as raw material for real time sound synthesis algorithms implemented in SuperCollider.
