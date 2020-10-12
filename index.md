@@ -2,7 +2,7 @@
 Hybrid sonification project using machine learning and neural networks.
 
 ## Overview of the project
-This project aims to explore the idea of remoteness & isolation. It is a custom made system that works as a digital bridge over interconnected peers across the network (currently works only locally).  This project stems from my personal interest using custom made generative systems enacting human interaction and sonification. Some primary videos demonstrating the project can be found [here](https://www.youtube.com/playlist?list=PLiCZTYIqSUAb1J-Iu4lhVwDz6ljKCVj-W)
+This project aims to explore the idea of remoteness & isolation. It is a custom made system that works as a digital bridge over interconnected peers across the network (currently works only locally).  This project stems from my personal interest using custom made generative systems enacting human interaction and sonification, and networked music systems. Some primary videos demonstrating the project can be found [here](https://www.youtube.com/playlist?list=PLiCZTYIqSUAb1J-Iu4lhVwDz6ljKCVj-W)
 
 ## Modus Operandi 
 
@@ -17,7 +17,7 @@ At the moment the system uses a model to train a neural network using the X and 
 ![](https://github.com/KonVas/lick-the-toad/blob/main/images/nnet.gif?raw=true)
 
 ### Creative Outcomes
-The generated output can control real time sonfication algorithms which can run independently as an interactive installation and "on site" work and/or received by other performers remotely and thus can be interpreted to other sonification ad-hoc processes online. Thus, the system provides a hybrid mode of interaction, and can be used in many contexts. Data can be received by other audio platforms supporting OSC communication.
+The generated output can control real time sonfication algorithms which can run independently as an interactive installation and "on site" work and/or received by other performers remotely and thus can be interpreted to other sonification ad-hoc processes online expanding it as networked music system. Thus, the system provides a hybrid mode of interaction, and can be used in many contexts. Data can be received by other audio platforms supporting OSC communication.
 
 ![](https://github.com/KonVas/lick-the-toad/blob/main/images/audio-control-ltt.gif?raw=true)
 
