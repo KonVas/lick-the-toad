@@ -26,4 +26,4 @@ The generated output can control real time sonfication algorithms which can run 
 The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) for the implementation of machine learning capabilities. I am using SC for sonification but any other audio environment able to receive OSC messages can be used.
 
 ## Acknowledgments
-I would like to express my gratitude to these coding communities of [P5.js](https://p5js.org) and [Ml5.js](https://ml5js.org) respectivelly.
+I would like to express my gratitude to the following coding communities of [P5.js](https://p5js.org) and [Ml5.js](https://ml5js.org) respectivelly.
