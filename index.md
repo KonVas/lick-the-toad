@@ -7,7 +7,7 @@ This project aims to explore the idea of remoteness & isolation. It is a custom 
 ## Modus Operandi 
 
 ### User Interface
-Each user is assigned a ball object once logged into the client interface, dragging it X and Y positions are emitted as training data of the neural network model.
+Each user has a custom made client interface accesed via local and ad-hoc networ, dragging X and Y positions of each participating client are emitted as training data of the neural network model.
 
 ![](https://github.com/KonVas/lick-the-toad/blob/main/images/user.gif?raw=true)
 
