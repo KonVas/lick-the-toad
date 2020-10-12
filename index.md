@@ -7,7 +7,7 @@ This project aims to explore the idea of remoteness & isolation. It is a custom 
 ## Modus Operandi 
 
 ### User Interface
-Each user has a custom made client interface accesed via local and ad-hoc networ, dragging X and Y positions of each participating client are emitted as training data of the neural network model.
+Each user has a custom made client interface accesed via local and ad-hoc networ, dragging X and Y positions of each participating client are emitted as training data of the neural network model. Client communication is throught websockets (see technical details at the end of this page).
 
 ![](https://github.com/KonVas/lick-the-toad/blob/main/images/user.gif?raw=true)
 
@@ -22,7 +22,7 @@ The generated output can control real time sonfication algorithms which can run 
 ![](https://github.com/KonVas/lick-the-toad/blob/main/images/audio-control-ltt.gif?raw=true)
 
 ## Technical specifications
-The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) for the implementation of machine learning capabilities. I am using SC for sonification but any other audio environment able to receive OSC messages can be used.
+The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) for the implementation of machine learning capabilities. Client and SuperCollider communication is via websockets and [Socket.io](https://socket.io). I am using SC for sonification but any other audio environment able to receive OSC messages can be used.
 
 ## Acknowledgments
 I would like to express my gratitude to the following coding communities of [P5.js](https://p5js.org) and [Ml5.js](https://ml5js.org) respectivelly.
