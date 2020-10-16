@@ -7,7 +7,7 @@ This project aims to explore the idea of remoteness & isolation. It is a custom 
 ## Modus Operandi 
 
 ### User Interface
-Each user has a custom made client interface accesed via local and ad-hoc networ, dragging X and Y positions of each participating client are emitted as training data of the neural network model. Client communication is throught websockets (see technical details at the end of this page).
+Each user has a custom made client interface which may be accessed via local and ad-hoc networ, dragging X and Y positions of each participating client are emitted as training data of the neural network model. Client communication is through web-sockets (see technical details at the end of this page).
 
 ![](https://github.com/KonVas/lick-the-toad/blob/main/images/user.gif?raw=true)
 
@@ -17,7 +17,7 @@ At the moment the system uses a model to train a neural network using the X and 
 ![](https://github.com/KonVas/lick-the-toad/blob/main/images/nnet.gif?raw=true)
 
 ### Creative Outcomes
-The generated output can control real time sonfication algorithms which can run independently as an interactive installation and "on site" work and/or received by other performers remotely and thus can be interpreted to other sonification ad-hoc processes online expanding it as networked music system. Thus, the system provides a hybrid mode of interaction, and can be used in many contexts. Data can be received by other audio platforms supporting OSC communication.
+The generated output can control real time sonfication algorithms which can run independently as an interactive installation and "on site" work and/or received by other performers remotely and thus can be interpreted to other sonification ad-hoc processes online expanding it as networked music system. Thus, the system provides a hybrid mode of interaction, and can be used in many contexts. Data can be distributed to other audio platforms supporting OSC communication.
 
 ![](https://github.com/KonVas/lick-the-toad/blob/main/images/audio-control-ltt.gif?raw=true)
 
