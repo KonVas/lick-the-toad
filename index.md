@@ -25,7 +25,7 @@ The generated output can control real time sonfication algorithms which can run 
 The system is developed as a cross platform application running on NodeJS, and JavaScript and [SuperCollider](https://supercollider.github.io), and [ml5](https://ml5js.org) for the implementation of machine learning capabilities. Client and SuperCollider communication is via websockets and [Socket.io](https://socket.io). I am using SC for sonification but any other audio environment able to receive OSC messages can be used.
 
 ## Stage planning
-This is based in an immersive environment ideally, a dark space. The projection must be placed vertically inside the room. The cursor is scanning the room constantly and diffusing the sound to the speaker(s) that is closer.
+This is based in an immersive environment ideally, a dark space. The projection must be placed vertically inside the room somewhere from top and facing to the floor. The cursor is scanning the room constantly and diffusing the sound to the speaker(s) that is closer.
 
 ![](https://github.com/KonVas/lick-the-toad/blob/main/images/lickthetoad_stageplan.jpg)
 
