@@ -26,6 +26,7 @@ The system is developed as a cross platform application running on NodeJS, and J
 
 ## Stage planning
 This is based in an immersive environment ideally, a dark space. The projection must be placed vertically inside the room somewhere from top and facing to the floor. The cursor is scanning the room constantly and diffusing the sound to the speaker(s) that is closer.
+![](https://github.com/KonVas/lick-the-toad/blob/main/video-screens/cursor-scan-slow.gif)
 
 ![](https://github.com/KonVas/lick-the-toad/blob/main/images/lickthetoad_stageplan.jpg)
 
