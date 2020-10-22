@@ -1,8 +1,10 @@
 # Lick the toad
 Hybrid sonification project using machine learning and neural networks.
+![](https://github.com/KonVas/lick-the-toad/blob/main/images/pxlr-lickthetoad-screen.jpg)
 ![](https://github.com/KonVas/lick-the-toad/blob/main/video-screens/cursor-scan-slow.gif)
 
 ## Overview of the project
+![](https://github.com/KonVas/lick-the-toad/blob/main/video-screens/cursor-scan-slow.gif)
 This project aims to explore the idea of remoteness & isolation. It is a custom made system that works as a digital bridge over interconnected peers across the network (currently works only locally).  This project stems from my personal interest using custom made generative systems enacting human interaction and sonification, and [networked music systems](https://konvas.github.io/ice/). Some primary videos demonstrating the project can be found [here](https://www.youtube.com/playlist?list=PLiCZTYIqSUAb1J-Iu4lhVwDz6ljKCVj-W)
 
 ## Modus Operandi 
