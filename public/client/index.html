@@ -1,20 +1,36 @@
 <!DOCTYPE html>
-	<html>
+<html>
 	<head>
 	  <meta charset="UTF-8">
 	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 	  <meta name="viewport" content="width=device-width, initial-scale=1">
-	  <title>Lick the toad:USER</title>
-		<!-- p5 -->
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.min.js"></script>
-		<!-- tone  -->
-		<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/13.0.1/Tone.min.js" type="text/javascript"></script> -->
-		<!-- socket.io -->
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-    <!-- main -->
+	  <title>LICK_THE_TOAD - Client</title>
+		<form>
+			Select your favorite sound:
+			<select id="dropdown">
+				<option value="high">High</option>
+				<option value="mid">Mid</option>
+				<option value="low">Low</option>
+			</select>
+		</form>
+		<button type="button" value="low" onclick="myFunction()">Submit</button>
+		<p id="selectMenu"></p>
+		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"></script>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.js"></script>
+		<script type="text/javascript">
+
+			socket = io.connect('localhost:8000/')
+
+			function myFunction(){
+					let select = 'low'
+					selection = document.getElementById("dropdown").value;
+					document.getElementById("selectMenu").innerHTML = selection;
+					console.log(selection)
+					socket.emit('usr', {customId: selection})
+			}
+		</script>
 		<script src="./Ball.js" type="text/javascript"></script>
 		<script src="./sketch.js" type="text/javascript"></script>
 	</head>
-	</html>
-	
-	
+</html>

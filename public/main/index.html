@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html>
-	<body>
-		<p>Press <b>C</b> key to collect data and <b>D</b> for loading and training the system with new data.</p>
-		</body>
-	
 	<head>
-	  <meta charset="UTF-8">
-	  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-	  <meta name="viewport" content="width=device-width, initial-scale=1">
-	  <title>Lick the toad - ML5</title>
-		<!-- ml5 -->
-	  <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
-		<!-- p5 -->
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.min.js"></script>
-		<!-- socket.io -->
-		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-		<!-- osc -->
-		<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/osc-js@2.1.0/lib/osc.min.js"></script>
-		<!-- main -->
-		 <script src="./neuralNet.js" type="text/javascript"></script>
-	  		</head>
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <title>LICK_THE_TOAD</title>
+	<!-- ml5 -->
+    <script src="https://unpkg.com/ml5@0.5.0/dist/ml5.min.js" type="text/javascript"></script>
+<!-- p5 -->
+	<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+	<!-- socket.io -->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.1/socket.io.js"></script>
+	<script type="text/javascript" "></script>
+		                            <!-- main -->
+                                    <body>
+		                                <script src="./neuralNet.js" type="text/javascript"></script>
+
+                                        <script>
+
+                                            console.log('ml5 version:', ml5.version);
+
+                                            window.addEventListener("beforeunload", function (e) {
+                                            var confirmationMessage = 'confirm reload';
+
+                                            (e || window.event).returnValue = confirmationMessage;
+                                            return confirmationMessage;
+                                            });
+
+                                        </script>
+         </body'>
 	</html>
-	
-	

@@ -1,7 +1,7 @@
 {
   "name": "regression",
   "version": "1.0.0",
-  "description": "neural nets and regression",
+  "description": "neural nets, regression, sonification",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,9 +9,11 @@
   "author": "kv",
   "license": "ISC",
   "dependencies": {
+    "events": "^3.2.0",
     "express": "^4.17.1",
     "osc": "^2.4.1",
     "osc-js": "^2.1.0",
+    "react-css-dropdown": "^1.1.2",
     "socket.io": "^2.3.0",
     "unmute": "^0.1.3"
   }
