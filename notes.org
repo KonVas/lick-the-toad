@@ -1,8 +1,14 @@
+#+TITLE: Notes
+
+** Start Up
+IP address of machine running the app must be used in neuralNet.js and sketch.js corresponding socket requirements.
+
+** Use
 | Key | Actions                               |
 |-----+---------------------------------------|
 | D   | Trains the model if data is available |
 | T   | Runs training with collected data     |
 | C   | Switched to Collection mode           |
 
-
-Notes: IP address of machine running the app must be used in neuralNet.js and sketch.js corresponding socket requirements.
+** Saving Data
+'data.json' contains training data and is stored locally in the machine.
