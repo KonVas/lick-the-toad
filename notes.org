@@ -11,4 +11,4 @@ IP address of machine running the app must be used in neuralNet.js and sketch.js
 | C   | Switched to Collection mode           |
 
 ** Saving Data
-'data.json' contains training data and is stored locally in the machine.
+Inside "data folder" there is _data.json_ which contains training data and is stored locally in the machine.
