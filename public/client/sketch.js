@@ -12,7 +12,7 @@ function setup() {
     textAlign(CENTER);
     textSize(50);
 
-    socket = io.connect('http://192.168.1.102:8000/')
+    socket = io.connect('http://192.168.1.104:8000/')
 
     ball = new Ball(random(innerWidth), random(innerHeight), random(10, 24));
 

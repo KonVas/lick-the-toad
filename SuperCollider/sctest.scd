@@ -7,43 +7,81 @@ s.boot
 NetAddr.langPort
 
 
+//Live Ambisonics => Binaural Morning Fun
+//Stochastic Synthesis
+//use headphones for true binaural experience
+///This is Lick The Toad Ambisonics and Binaural Version
+////////////////////////////
+
 (
-Server.default.options.outDevice_("JackBridge");
+s.options.outDevice_("JackBridge");
 s.reboot;
+s.scope
+//s.makeWindow;
 //OSCFunc.trace(false)
 )
+
 
 //Record controls:
 
 (
 b = Buffer.alloc(s, s.sampleRate / Server.default.options.blockSize*2);
-b.plot;
+p = BuffPlot(b, updateRate:20).play;
+)
+p.free
+b.free
 //{RecordBuf.kr(LFNoise1.kr(10, 120), b)}.play;
 
-Ndef(\rec, {RecordBuf.kr( \freq.kr(10, 0.3), b)}).play;
+Spec.add(\freq, [-1, 0.99]);
 
-Ndef(\in, {SinOsc.ar(PlayBuf.kr(1, b, loop: 1).range(100, 500), 0, 0.1).dup}).play(0, 1);
-Ndef(\in)[1] = \filter -> {|in| Shaper.ar(b, in) + in };
-Ndef(\in)[2] = \filter -> {|in| LeakDC.ar(in) + in };
+Ndef.clear
+
+Ndef(\rec, {RecordBuf.kr( \freq.kr(0.0, 0.01), b)}).play;
+
+Ndef(\playbuf, {SinOsc.ar(PlayBuf.kr(1, b, loop: 1).range(100, 500), 0, 0.1).dup}).play(0, 1);
+
+
+Ndef(\playbuf)[1] = \filter -> {|in| Shaper.ar(b, in) + in };
+Ndef(\playbuf)[2] = \filter -> {|in| LeakDC.ar(in)};
+
+(
+Ndef(\looper, {
+	Looper.ar(
+		\in.ar([0,0])*0.25, 2,
+		b.duration,
+		\recRate.kr(1, 3),
+		\recScale.kr(1, 3),
+		\recDur.kr(0.25, 3),
+		\playStart.kr(0.1, 3) * BufFrames.ir(b),
+		\playRate.kr(1, 3),
+		\playScale.kr(1, 3),
+		\playDur.kr(0.1, 3)
+	)
+}).play(0, 2);
+)
+
+s.scope
+
 
 Ndef(\instr, {Instruction.ar(b.bufnum)}).play;
 
-Ndef(\instr)[1] = \filter -> {|in| Shaper.ar(b, in) + in };
-Ndef(\instr)[2] = \filter -> {|in| LeakDC.ar(in) + in };
-Ndef(\instr)[3] = \filter -> {|in| Resonz.ar(in) + in };
-Ndef(\instr)[4] = \filter -> {|in| FreeVerb.ar(in)*0.5 + in};
-Ndef(\instr)[5] = \filter -> {|in| GVerb.ar(in)*0.2 + in };
-Ndef(\instr)[6] = \filter -> {|in| Ringz.ar(in*0.07, decay:90) };
+Ndef(\instruction)[1] = \filter -> {|in| Shaper.ar(b, in) + in };
+Ndef(\instruction)[2] = \filter -> {|in| LeakDC.ar(in) + in };
+Ndef(\looper)[3] = \filter -> {|in| Resonz.ar(in) + in };
+Ndef(\looper)[4] = \filter -> {|in| FreeVerb.ar(in)*0.5 + in};
+Ndef(\looper)[5] = \filter -> {|in| GVerb.ar(in)*0.2 + in };
+Ndef(\looper)[6] = \filter -> {|in| Ringz.ar(in*0.07, decay:30, mul:0.1) };
 
+NdefMixer(s)
 
-
+Ndef(\rec).gui
 
 Ndef(\looper)[1] = \filter -> {|in| Shaper.ar(b, in, add:in) };
 
 
 Spec.add(\freq, [0.1, 1.0]);
-Spec.add(\recRate, [0.1, 10]);
-Spec.add(\recScale, [0.1, 10]);
+Spec.add(\recRate, [0.1, 1.0]);
+Spec.add(\recScale, [0.1, 1]);
 
 (
 OSCdef(\rgrsn, {|msg|
@@ -68,7 +106,7 @@ OSCdef(\crsY, {|msg|
 );
 
 
-Ndef(\looper, {Looper.ar(Ndef.ar(\instr)*0.1, 2, LFNoise0.kr(1).range(0.1, 1.75), \recRate.kr(1, 3), \recScale.kr(1, 3) )}).play(1, 1);
+
 Ndef(\looper).vol_(0.25);
 Ndef(\looper)[1] = \filter -> {|in| Shaper.ar(b, in) ** in };
 Ndef(\looper)[2] = \filter -> {|in| LeakDC.ar(in) ** in };

@@ -1,47 +1,45 @@
+const osc = require('./osc/osc_server.js')
 const express = require('express')
-const socket = require('socket.io')
-const osc = require('osc')
-const { notes } = require('./lib/lib.js')
-let balls = [];
-let clients = {}
-let name = ' ';
+const app = express()
+const Ball = require('./api/Ball.js')
 
-function Ball(id, x, y, r) {
+
+let server = app.listen(8000, function () {
+    console.log(`Listening to requests on http://localhost:${server.address().port}/main/ (OSC Port:${osc.udpPort.options.remotePort})`);
+});
+
+const io = require("socket.io")(server, {
+    cors: {
+        origin: "http://localhost:8000",
+        methods: ["GET", "POST"]
+    }
+});
+
+let balls = [];
+
+//ball api
+/*function Ball(id, x, y, r) {
     this.id = id;
     this.x = x;
     this.y = y;
     this.r = r;
-}
-
-const app = express()
+}*/
 
 app.use(express.static('public'));
 
-let server = app.listen(8000, function () {
-    console.log(`Listening to requests on http://localhost:${server.address().port}/main/ (OSC Port:${udpPort.options.remotePort})`);
-});
+osc.udpPort.open()
 
-let io = socket(server);
-
-const udpPort = new osc.UDPPort({
-    // This is the port we're listening on.
-    localAddress: "127.0.0.1",
-    localPort: 57121,
-    // This is where sclang is listening for OSC messages.
-    remoteAddress: "127.0.0.1",
-    remotePort: 57120,
-    metadata: true
+osc.udpPort.on("message", (oscMsg) => {
+    console.log("An OSC message just arrived!", oscMsg)
 })
-
-udpPort.open()
 
 
 function heartbeat() {
     io.sockets.emit('heartbeat', balls)
     //console.log(balls)
 }
-setInterval(heartbeat, 33)
 
+setInterval(heartbeat, 33)
 
 io.sockets.on('connection', (socket) => {
 
@@ -50,12 +48,12 @@ io.sockets.on('connection', (socket) => {
     socket.on('usr', (data) => {
         console.log(`A client has connected: ${data.customId} from ${handshake.address}`)
         socket.customId = data.customId
-  //  })
+        //  })
 
-//    socket.on('start', (data) => { //was socket.id insted username
-        let ball = new Ball(socket.customId, data.x, data.y, data.r*2)
+        //    socket.on('start', (data) => { //was socket.id insted username
+        let ball = new Ball (socket.customId, data.x, data.y, data.r*2)
         balls.push(ball)
-      //  console.log(ball)
+        //  console.log(ball)
     })
 
     socket.on('update', (data) => {
@@ -78,60 +76,35 @@ io.sockets.on('connection', (socket) => {
         balls.splice(0,1)
     })
 
-    socket.on('controller', (data) => {
+    socket.on('controller', (data) =>  {
 
-        const msg = {
-
-            timeTag: osc.timeTag(60),
-
-            packets: [
-                {
-                    address: '/neural/net/regression',
-                    args: [
-                        {
-                            type: 'f',
-                            value: data[0]
-                        }
-                    ]
-                },
-                {
-                    address: '/neural/net/cursor/x',
-                    args: [
-                        {
-                            type: 'f',
-                            value: data[1]
-                        }
-                    ]
-                },
-                {
-                    address: '/neural/net/cursor/y',
-                    args: [
-                        {
-                            type: 'f',
-                            value: data[2]
-                        }
-                    ]
-                }
-            ]
-
+        function dataFilterDup(array){
+            return new Set(array).size !== data.length
         }
 
-        data.map((elem) => {
+        if(dataFilterDup(data)){
+            console.log("dups found")
+        } else {
+            console.log(`no dups found OSC is served to (${osc.udpPort.options.remotePort})`)
 
-            if( elem !== NaN && elem !== null && elem !== undefined  ){
-
-                udpPort.send(msg)
-
-            } else {
-
-                console.log('undefined data')
-                
-            }
-            
-        })
-
-        console.log(`Sending OSC ${msg.packets} to ${udpPort.options.remoteAddress} + port: ${udpPort.options.remotePort}` )
+            osc.udpPort.send({
+                address: "/lick/the/toad",
+                args: [
+                    {
+                        type: 'f',
+                        value: Number.parseFloat(data[0]).toFixed(2)
+                    },
+                    {
+                        type: 'f',
+                        value: data[1]
+                    },
+                    {
+                        type: 'f',
+                        value: data[2]
+                    }
+                ]
+            })
+        }
 
     })
-
 })

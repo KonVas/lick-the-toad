@@ -1,9 +1,15 @@
-
-let state = 'waiting', xoff = 0.0, speedSlider, modelInfo, learnRate = 0.2, targetSlider;
-let socket, brain, rgrsn = 0.0, cursor = {}, epochsSlider, epochs = 10, rotX = 0;
-
-const inputs = []
-
+let state = 'waiting',
+    mode = 'manual',
+    xoff = 0.0,
+    speedSlider,
+    modelInfo,
+    learnRate = 0.2,
+    socket,
+    brain,
+    rgrsn = 0.0,
+    cursor = {},
+    epochs = 10,
+    inputs = [];
 
 const freqs = {
     low: 80,
@@ -11,14 +17,12 @@ const freqs = {
     high: 660
 }
 
-
-
 /*function mousePressed() {
   if (mouseX > 0 && mouseX < 100 && mouseY > 0 && mouseY < 100) {
   let fs = fullscreen();
   fullscreen(!fs);
   }
-  }
+}
 */
 
 const options = {
@@ -31,16 +35,16 @@ const trainingOptions = {
     batchSize: 12
 }
 
-
-
-
 function setup(){
-    createCanvas(displayWidth, displayHeight)
+    createCanvas(windowWidth, windowHeight)
 
-    background(0)
-    strokeWeight(1.25);
-    stroke(304)
+    stroke(204)
+
     colorMode(HSB, 255);
+
+    speedSlider = createSlider(0, 0.1, 0.001, 0.001);
+    speedSlider.position(10, 65);
+    speedSlider.style('width', '200px');
 
     let modelInfo = {
         model: '../model/model.json',
@@ -53,7 +57,7 @@ function setup(){
     //brain.load(modelInfo, modelLoaded)
 
     //Host IP address
-    socket = io.connect('http://192.168.1.102:8000/')
+    socket = io.connect('http://192.168.1.104:8000/')
 
     //receive input data from server
     socket.on('heartbeat', (data) => {
@@ -66,6 +70,10 @@ function setup(){
             getInputs(inputs)
         }
     })
+}
+
+function windowResized() {
+   resizeCanvas(windowWidth, windowHeight);
 }
 
 function getInputs(data) {
@@ -97,13 +105,15 @@ async function keyPressed(){
         brain.saveData('data')
     }
     else if (key == 'c') {
-        await sleep(1000)
+
+       await sleep(1000)
         state = 'collecting'
         console.log('collecting...')
         await sleep(1000)
         console.log('done collecting!')
         state = 'waiting'
-    }
+
+   }
 
     if(key == 't' && state == 'waiting') {
 
@@ -147,9 +157,14 @@ function whileTraining(epoch, loss){
 }
 
 function finished(){
+
+    let data = brain.data.training
+
     console.log('training finished!')
+
     state = 'prediction'
-    inputs.push(brain.data.training)
+
+    inputs.push(data)
     //brain.predict([mouseX, mouseY], handleResults)
 }
 
@@ -194,34 +209,44 @@ function finished(){
   }
 */
 
-/*
-  function drawCursor() {
-  noFill()
-  let speedCursor = speedSlider.value()
-  xoff = xoff + speedCursor
-  cursor = {
-  x:noise(xoff) * width,
-  y:noise(xoff) * height
-  }
-  line(cursor.x, 0, cursor.x, height)
-  line(0, cursor.y, width, cursor.y)
-  brain.predict(cursor, handleResults)
-  }
+//predict using a cursor controlled by Perlin noise generator.
+function drawCursor() {
+    if(state == 'prediction' && mode == 'automatic') {
+    let speedCursor = speedSlider.value()
 
-  function drawCursorVals(){
-  text("X: " +cursor.x, 10, 30)
-  text("Y: " +cursor.y, 10, 45)
-  text("Rgrsn: " +regression_rate, 10, 60)
-  }
-*/
+    xoff = xoff + speedCursor / 2
+
+    cursor = {
+        x:noise(xoff) * width,
+        y:noise(xoff) * height
+    }
+
+    line(cursor.x, 0, cursor.x, height)
+    line(0, cursor.y, width, cursor.y)
+
+    brain.predict([cursor.x, cursor.y], handleResults)
+    } else {
+         cursor = {
+        x:mouseX,
+        y:mouseY
+    }
+
+    line(cursor.x, 0, cursor.x, height)
+    line(0, cursor.y, width, cursor.y)
+
+    }
+}
+
+function drawCords(){
+    text("X: " +cursor.x, 10, 30)
+    text("Y: " +cursor.y, 10, 45)
+    text("RegressionValue: " +rgrsn, 10, 60)
+}
 
 function draw(){
-    noStroke()
     background(0)
-    rotX+= 0.02
 
     if(state == 'collecting') {
-        fill(255);
         textSize(32);
         floor(text('collecting...', width/2, height/2))
     }
@@ -232,19 +257,22 @@ function draw(){
             let inputs = items.xs
             mx = map(inputs.x, 0, 1, 0, width)
             my = map(inputs.y, 0, 1, 0, height)
-            ellipse(mx,  my, 20)
-            fill('grey')
-            text(rgrsn, mouseX, mouseY)
+            fill('teal')
+            ellipse(mx,  my, 6)
         })
 
-
-
+        noFill()
+        drawCursor()
+        drawCords()
+        brain.predict(cursor, handleResults)
     }
-
 }
 
+//predict manually using mouse coordinates
 function mouseDragged(){
-    brain.predict([mouseX, mouseY], handleResults)
+    if(state == 'prediction' && mode == 'manual'){
+        brain.predict([mouseX, mouseY], handleResults)
+    }
 }
 
 function handleResults(error, result) {
@@ -253,7 +281,7 @@ function handleResults(error, result) {
         return
     }
 
-    console.log(result[0])
+    //console.log(result[0])
     rgrsn = parseFloat(result[0].value)
-    socket.emit('controller', [rgrsn, mouseX, mouseY])
+    socket.emit('controller', [rgrsn, cursor.x, cursor.y])
 }
