@@ -1,0 +1,8 @@
+| Key | Actions                               |
+|-----+---------------------------------------|
+| D   | Trains the model if data is available |
+| T   | Runs training with collected data     |
+| C   | Switched to Collection mode           |
+
+
+Notes: IP address of machine running the app must be used in neuralNet.js and sketch.js corresponding socket requirements.
