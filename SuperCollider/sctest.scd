@@ -65,12 +65,13 @@ s.scope
 
 Ndef(\instr, {Instruction.ar(b.bufnum)}).play;
 
-Ndef(\instruction)[1] = \filter -> {|in| Shaper.ar(b, in) + in };
-Ndef(\instruction)[2] = \filter -> {|in| LeakDC.ar(in) + in };
+Ndef(\looper)[1] = \filter -> {|in| Shaper.ar(b, in) + in };
+Ndef(\looper)[2] = \filter -> {|in| LeakDC.ar(in) + in };
 Ndef(\looper)[3] = \filter -> {|in| Resonz.ar(in) + in };
 Ndef(\looper)[4] = \filter -> {|in| FreeVerb.ar(in)*0.5 + in};
 Ndef(\looper)[5] = \filter -> {|in| GVerb.ar(in)*0.2 + in };
 Ndef(\looper)[6] = \filter -> {|in| Ringz.ar(in*0.07, decay:30, mul:0.1) };
+Ndef(\looper)[6] = \filter -> {|in| PitchShift.ar(in, 0.2, 30, 1.1) };
 
 NdefMixer(s)
 
@@ -111,6 +112,8 @@ Ndef(\looper).vol_(0.25);
 Ndef(\looper)[1] = \filter -> {|in| Shaper.ar(b, in) ** in };
 Ndef(\looper)[2] = \filter -> {|in| LeakDC.ar(in) ** in };
 
+
+Ndef.clear
 
 NdefMixer(s);
 )

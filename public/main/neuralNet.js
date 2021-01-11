@@ -1,29 +1,23 @@
 let state = 'waiting',
-    mode = 'manual',
+    predictionMode = 'manual',
     xoff = 0.0,
     speedSlider,
     modelInfo,
-    learnRate = 0.2,
     socket,
     brain,
-    rgrsn = 0.0,
     cursor = {},
-    epochs = 10,
-    inputs = [];
+    button,
+    inputs = [],
+    oscObjMsg = {},
+    msg = {};//oscPort;
 
-const freqs = {
+
+
+let freqs = {
     low: 80,
     mid: 220,
     high: 660
 }
-
-/*function mousePressed() {
-  if (mouseX > 0 && mouseX < 100 && mouseY > 0 && mouseY < 100) {
-  let fs = fullscreen();
-  fullscreen(!fs);
-  }
-}
-*/
 
 const options = {
     task: 'regression',
@@ -43,8 +37,9 @@ function setup(){
     colorMode(HSB, 255);
 
     speedSlider = createSlider(0, 0.1, 0.001, 0.001);
-    speedSlider.position(10, 65);
+    speedSlider.position(10, 100);
     speedSlider.style('width', '200px');
+
 
     let modelInfo = {
         model: '../model/model.json',
@@ -57,9 +52,9 @@ function setup(){
     //brain.load(modelInfo, modelLoaded)
 
     //Host IP address
-    socket = io.connect('http://192.168.1.104:8000/')
+    socket = io.connect('http://192.168.1.104:8000')
 
-    //receive input data from server
+    //receive input data from ball clients
     socket.on('heartbeat', (data) => {
         let inputs = []
         if(data !== null && state == 'collecting'){
@@ -70,10 +65,49 @@ function setup(){
             getInputs(inputs)
         }
     })
+
 }
 
+/*
+//OSC UDP-Browser Configuration
+    oscPort = new osc.WebSocketPort({
+        url: "ws://192.168.1.104:8081",
+        metadata: true
+    })
+
+oscPort.open()
+
+function checkBadVals(input){
+    msg = Object.fromEntries(
+        Object.entries(input).map(([key, value]) => [key, value.toFixed(2)])
+    )
+}
+
+function sendOSCMsg(input) {
+
+    if(checkBadVals(input) === NaN){
+        console.log(`NaN values detected ${vals}`)
+    } else {
+
+        oscPort.send({
+            address: '/lick-the-toad/osc-data/to-sc',
+            args: [
+                {
+                    type: 's',
+                    value: JSON.stringify(socket.id)
+                },
+                {
+                    type: 's',
+                    value: JSON.stringify(msg)
+                }
+            ]
+        })
+    }
+
+}*/
+
 function windowResized() {
-   resizeCanvas(windowWidth, windowHeight);
+    resizeCanvas(windowWidth, windowHeight);
 }
 
 function getInputs(data) {
@@ -87,11 +121,11 @@ function getInputs(data) {
                 y: item.y
             }
             let target = {
-                label: freqs[item.id]
+                frequency: freqs[item.id]
             }
             brain.addData(inputs, target)
         })
-        console.log(data)
+        //console.log(data)
         return inputs
     }
 }
@@ -106,16 +140,19 @@ async function keyPressed(){
     }
     else if (key == 'c') {
 
-       await sleep(1000)
+        await sleep(1000)
         state = 'collecting'
         console.log('collecting...')
         await sleep(1000)
         console.log('done collecting!')
         state = 'waiting'
 
-   }
+    }
+
 
     if(key == 't' && state == 'waiting') {
+
+        state = 'training'
 
         console.log('training started')
 
@@ -126,7 +163,7 @@ async function keyPressed(){
 
     //load file from data folder
     if(key == 'd' && state == 'waiting') {
-        brain.loadData('../data/data.json', dataLoaded)
+        brain.loadData('./data.json', dataLoaded)
     }
 
     //save model in model folder
@@ -137,10 +174,11 @@ async function keyPressed(){
 
 function dataLoaded(){
     console.log('data loaded')
+
     state = 'training'
 
     console.log('starting training')
-    console.log(trainingOptions)
+    //console.log(trainingOptions)
 
     brain.normalizeData()
     brain.train(trainingOptions, whileTraining, finished)
@@ -153,19 +191,16 @@ function modelLoaded() {
 
 
 function whileTraining(epoch, loss){
-    console.log(`epoch:${epoch}, loss:${loss}`)
+    //console.log(`epoch:${epoch}, loss:${loss}`)
 }
 
 function finished(){
-
     let data = brain.data.training
-
     console.log('training finished!')
-
     state = 'prediction'
-
     inputs.push(data)
     //brain.predict([mouseX, mouseY], handleResults)
+    //brain.neuralNetwork.model.layers[0].getWeights()[0].print()
 }
 
 /*function ballVals(){
@@ -210,55 +245,59 @@ function finished(){
 */
 
 //predict using a cursor controlled by Perlin noise generator.
+
 function drawCursor() {
-    if(state == 'prediction' && mode == 'automatic') {
-    let speedCursor = speedSlider.value()
+    if(state == 'prediction' && predictionMode == 'automatic') {
+        let speedCursor = speedSlider.value()
 
-    xoff = xoff + speedCursor / 2
 
-    cursor = {
-        x:noise(xoff) * width,
-        y:noise(xoff) * height
-    }
+        xoff = xoff + speedCursor / 2
 
-    line(cursor.x, 0, cursor.x, height)
-    line(0, cursor.y, width, cursor.y)
+        cursor = {
+            x:noise(xoff) * windowWidth,
+            y:noise(xoff) * windowHeight
+        }
 
-    brain.predict([cursor.x, cursor.y], handleResults)
+        line(cursor.x, 0, cursor.x, windowHeight)
+        line(0, cursor.y, windowWidth, cursor.y)
+
+        brain.predict([cursor.x, cursor.y], handleResults)
+
     } else {
-         cursor = {
-        x:mouseX,
-        y:mouseY
-    }
+        cursor = {
+            x:mouseX,
+            y:mouseY
+        }
 
-    line(cursor.x, 0, cursor.x, height)
-    line(0, cursor.y, width, cursor.y)
+        line(cursor.x, 0, cursor.x, windowHeight)
+        line(0, cursor.y, windowWidth, cursor.y)
 
     }
 }
 
 function drawCords(){
-    text("X: " +cursor.x, 10, 30)
-    text("Y: " +cursor.y, 10, 45)
-    text("RegressionValue: " +rgrsn, 10, 60)
+    text("X: " + cursor.x, 10, 30)
+    text("Y: " + cursor.y, 10, 45)
+    text("RegressionValue: " + parseFloat(oscObjMsg.freq).toFixed(2), 10, 60)
 }
 
 function draw(){
     background(0)
+    noSmooth();
 
     if(state == 'collecting') {
-        textSize(32);
-        floor(text('collecting...', width/2, height/2))
+        floor( text("collecting".toUpperCase(), windowWidth/2, windowHeight/2) )
     }
 
     if(state == 'prediction') {
-        let mx, my;
+        let x, y;
         inputs[0].forEach(items => {
             let inputs = items.xs
-            mx = map(inputs.x, 0, 1, 0, width)
-            my = map(inputs.y, 0, 1, 0, height)
-            fill('teal')
-            ellipse(mx,  my, 6)
+            x = map(inputs.x, 0, 1, 0, windowWidth)
+            y = map(inputs.y, 0, 1, 0, windowHeight)
+
+            stroke(255)
+            point(x,  y)
         })
 
         noFill()
@@ -270,7 +309,7 @@ function draw(){
 
 //predict manually using mouse coordinates
 function mouseDragged(){
-    if(state == 'prediction' && mode == 'manual'){
+    if(state == 'prediction' && predictionMode == 'manual'){
         brain.predict([mouseX, mouseY], handleResults)
     }
 }
@@ -280,8 +319,14 @@ function handleResults(error, result) {
         console.error(error);
         return
     }
+    //socket.emit('controller', [result[0], cursor.x, cursor.y])
+    
+    oscObjMsg = {
+        freq: result[0].frequency,
+        raw: result[0].unNormalizedValue,
+        x_pos: cursor.x,
+        y_pos: cursor.y
+    }
 
-    //console.log(result[0])
-    rgrsn = parseFloat(result[0].value)
-    socket.emit('controller', [rgrsn, cursor.x, cursor.y])
+    sendOSCMsg(oscObjMsg)
 }
