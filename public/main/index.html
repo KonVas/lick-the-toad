@@ -12,9 +12,7 @@
   <!-- socket.io -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.0.4/socket.io.js"></script>
   <script src="/osc-browser.min.js"></script>
-
   <!-- main -->
-
   <body>
     <script src="./neuralNet.js" type="text/javascript"></script>
     <button class="btn_trig">Train</button>
@@ -31,7 +29,8 @@
 
       console.log('ml5 version:', ml5.version);
       window.addEventListener("beforeunload", function (e) {
-          var confirmationMessage = 'confirm reload';
+
+          var confirmationMessage = 'You leaving??'
 
           (e || window.event).returnValue = confirmationMessage;
           return confirmationMessage;
@@ -59,26 +58,48 @@
 
       //OSC UDP-Browser Configuration
       let oscPort = new osc.WebSocketPort({
-          url: "ws://192.168.1.104:8081",
-          metadata: true
-      })
-      
-      oscPort.on("message", function (msg) {
-          $("#message").text(msg);
-          console.log(`A message arrived from: \n ${msg.address} \n ${JSON.stringify(msg.args[0].value)}`)
+          url: "ws://192.168.1.104:8081"
       })
 
+      //oscPort.listen()
       oscPort.open()
 
+
+      //{id: "high", x: 599.7942424901669, y: 252.69052874880936, r: 22.595282431019992}
+      
       function checkBadVals(input){
           msg = Object.fromEntries(
-              Object.entries(input).map(([key, value]) => [key, value.toFixed(2)])
+              Object.entries(input).map(([key, value]) => [key, value])
           )
+          
           return msg
       }
 
-      function sendOSCMsg(input) {
+      
+      oscPort.on("message", function(msg) {
+          $("#message").text(msg)
+          let oscFromSC = []
+         
+          let obj = {}
+          
+          obj = {
+              id:msg.args[1],
+              x: map(msg.args[2], 0, 1, 0, windowWidth),
+              y: map(msg.args[3], 0, 1, 0, windowHeight)
+          }
 
+          //console.log(msg.args[0])
+          
+          if(msg.args[0] == ' '){
+              console.log("empty label, waiting...")
+          } else if (msg.args[0] == 1 ||  state == 'collecting'){
+              oscFromSC.push(obj)
+              console.log(oscFromSC)
+              getInputs(oscFromSC)
+          }
+      })
+
+      function sendOSC(input) {
           if(checkBadVals(input) === NaN){
               console.log(`NaN values detected ${input}`)
           } else {

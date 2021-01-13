@@ -21,6 +21,29 @@ a = Array();
 
 d
 
+
+
+(
+n = NetAddr("127.0.0.1", 57121);
+
+~setter = {
+	|state = 0|
+	Tdef(\oscToJS, {
+	loop{
+		0.25.wait;
+		if(state == 1){
+			n.sendMsg('/osc-to-browser', state, "high", rrand(0.1, 1.0), rrand(0.1, 1.0));
+			"state was changed to trigger %".format(state).postln;
+		}
+	}
+});
+}
+)
+
+~setter.value(0)
+
+Tdef(\oscToJS).play;
+
 (
 var oldUserID,  oldData;
 OSCdef(\x, {arg ...args;
@@ -34,8 +57,8 @@ OSCdef(\x, {arg ...args;
 },  '/lick-the-toad/osc-data/to-sc')
 )
 
-d.asArray[0].values
-
+//access the data as an array:
+d.asArray
 
 (
 SynthDef(\sinegrain,
@@ -45,14 +68,13 @@ SynthDef(\sinegrain,
 		Out.ar(out, Pan2.ar(SinOsc.ar(freq, 0.5pi, env), pan, amp*0.5) * LFPar.kr(LFNoise1.kr(1)).range(0.1, 1.0))
 	}).add;
 
-Pbindef(\x).play(quant:(phase:4.0.rand));
-
 Pbindef('x',
 	\instrument, \sinegrain,
 	\dur, 0.15,
 	\sustain, Pwhite(0.1, Pkey(\dur)/2, inf),
 	\amp, Pwhite(0.1, 1.0, inf),
 	\freq, Pfunc{ Pxrand(d.asArray[0].values, inf, 0.1).asStream.next });
+Pbindef(\x).play(quant:(phase:4.0.rand));
 
 Pbindef('y',
 	\instrument, \sinegrain,
@@ -60,7 +82,6 @@ Pbindef('y',
 	\sustain, Pwhite(0.1, Pkey(\dur)/2, inf),
 	\amp, Pwhite(0.1, 1.0, inf),
 	\freq, Pfunc{ Pxrand(d.asArray[1].values*2, inf, 0.1).asStream.next });
-
 Pbindef(\y).play(quant:(phase:4.0.rand));
 
 Pbindef('z',
@@ -69,11 +90,8 @@ Pbindef('z',
 	\sustain, Pwhite(0.1, Pkey(\dur)/2, inf),
 	\amp, Pwhite(0.1, 1.0, inf),
 	\freq, Pfunc{ Pseq(d.asArray[2].values*4, inf, 1).asStream.next });
-
 Pbindef(\z).play(quant:(phase:4.0.rand));
 )
-
-Pbindef.gui
 
 (
 SynthDef(\recordbuf, {
@@ -86,13 +104,9 @@ Pbindef('f',
 	\freq, Pfunc{
 		v = d.asArray[1].values.collect({|items| items / 1400.0 });
 		Pxrand(v, inf).asStream.next
-	}
-);
-
+	});
 Pbindef(\f).play(quant:(phase:1.0.rand));
 )
-
-d.values
 
 Ndef(\playbuf, {SinOsc.ar(PlayBuf.kr(1, b, loop: 1).range(40, 120) * LFPar.kr(LFNoise1.kr(0.1)).range(0.1,1), 0, 0.1).dup }).play(0, 2);
 
@@ -113,10 +127,8 @@ Ndef(\looper, {
 		\playScale.kr(1, 3),
 		\playDur.kr(0.1, 3)
 		).sum * EnvGen.kr(Env.sine(6), doneAction:2),
-		LFNoise1.kr(1).range(-1, 1)
-	)
+		LFNoise1.kr(1).range(-1, 1))
 }).play(0, 2);
-
 
 Ndef(\looper)[8] = \xset ->
 Pbind(\dur, 0.25,

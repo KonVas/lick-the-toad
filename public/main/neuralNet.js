@@ -52,10 +52,15 @@ function setup(){
     //brain.load(modelInfo, modelLoaded)
 
     //Host IP address
-    socket = io.connect('http://192.168.1.104:8000')
+    socket = io.connect('http://192.168.1.104:8000', {reconnect:true})
+
+    function checkInput(input){
+        console.log("Data received:", input)
+    }
 
     //receive input data from ball clients
     socket.on('heartbeat', (data) => {
+        //console.log(data)
         let inputs = []
         if(data !== null && state == 'collecting'){
             data.forEach(items => {
@@ -63,6 +68,7 @@ function setup(){
                     inputs.push(items)
             })
             getInputs(inputs)
+            //console.log(inputs)
         }
     })
 
@@ -113,15 +119,14 @@ function windowResized() {
 function getInputs(data) {
     if(data == null){
         console.log('no data flow')
-    }
-    else {
+    }   else {
         data.forEach(item => {
             let inputs = {
                 x: item.x,
                 y: item.y
             }
             let target = {
-                frequency: freqs[item.id]
+                label: freqs[item.id]
             }
             brain.addData(inputs, target)
         })
@@ -322,11 +327,13 @@ function handleResults(error, result) {
     //socket.emit('controller', [result[0], cursor.x, cursor.y])
     
     oscObjMsg = {
-        freq: result[0].frequency,
+        freq: result[0].value,
         raw: result[0].unNormalizedValue,
         x_pos: cursor.x,
         y_pos: cursor.y
     }
 
-    sendOSCMsg(oscObjMsg)
+    //console.log(result[0])
+
+    sendOSC(oscObjMsg)
 }

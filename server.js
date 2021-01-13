@@ -1,17 +1,20 @@
 const express = require('express')
 const app = express()
 const Ball = require('./api/Ball.js')
-const host = "192.168.1.104"
-let port;
+let PORT = 8000;
 let handshake;
 
 const osc = require('osc'),
       WebSocket = require('ws');
 
+let server = app.listen(PORT, '192.168.1.104', function() {
+    console.info(`Server is running: http://${server.address().address}:${PORT}/main/`);
+})
+
 var getIPAddresses = function () {
     var os = require("os"),
-    interfaces = os.networkInterfaces(),
-    ipAddresses = [];
+        interfaces = os.networkInterfaces(),
+        ipAddresses = [];
 
     for (var deviceName in interfaces){
         var addresses = interfaces[deviceName];
@@ -44,17 +47,18 @@ udp.on("ready", function () {
         console.log(" Host:", address + ", Port:", udp.options.localPort);
     });
     console.log("Broadcasting OSC over UDP to", udp.options.remoteAddress + ", Port:", udp.options.remotePort);
+    console.log("Listening OSC over UDP to", udp.options.localAddress + ", Port:", udp.options.localPort);
 })
 
 udp.open()
 
-var wss = new WebSocket.Server({
+const wss = new WebSocket.Server({
     port: 8081
 })
 
 wss.on("connection", function (socket) {
 
-    console.log(`New OSC client was connected: ${handshake.address}`);
+    console.log(`New OSC client was connected ${handshake.address}`);
 
     let socketPort = new osc.WebSocketPort({
         socket: socket
@@ -65,15 +69,9 @@ wss.on("connection", function (socket) {
     })
 })
 
-
-let server = app.listen(8000, host, function() {
-    port = server.address().port
-    console.info(`Server is running: http://${host}:${port}/main/`);
-});
-
 const io = require("socket.io")(server, {
     cors: {
-        origin: `http://${server.address.host}:${server.address.port}`,
+        origin: `http://${server}:${PORT}`,
         methods: ["GET", "POST"],
         credentials: true
     }
@@ -82,19 +80,19 @@ const io = require("socket.io")(server, {
 let balls = [];
 
 app.use(express.static('public'));
+app.use(express.static('main'));
+app.use(express.static('client'));
 
 app.get('/osc-browser.min.js', function(req, res) {
     res.sendFile(__dirname + '/node_modules/osc/dist/osc-browser.min.js');
 })
 
-/*osc.udpPort.on("message", (oscMsg) => {
-    console.log("An OSC message just arrived!", oscMsg)
-})*/
-
+udp.on("message", (oscMsg) => {
+    console.log("An OSC message just arrived!", oscMsg.args)
+})
 
 function heartbeat() {
     io.sockets.emit('heartbeat', balls)
-    //console.log(balls)
 }
 
 setInterval(heartbeat, 33)
@@ -111,7 +109,7 @@ io.sockets.on('connection', (socket) => {
         //    socket.on('start', (data) => { //was socket.id insted username
         let ball = new Ball (socket.customId, data.x, data.y, data.r*2)
         balls.push(ball)
-        //  console.log(ball)
+        console.log(ball)
     })
 
     socket.on('update', (data) => {
@@ -138,36 +136,36 @@ io.sockets.on('connection', (socket) => {
 
     /*socket.on('controller', (data) =>  {
 
-        console.log(data)
+      console.log(data)
 
-        objectData = {
-            frequency: data[0].frequency,
-            raw: data[0].unNormalizedValue,
-            x_pos: data[1],
-            y_pos: data[2]
-        }
+      objectData = {
+      frequency: data[0].frequency,
+      raw: data[0].unNormalizedValue,
+      x_pos: data[1],
+      y_pos: data[2]
+      }
 
-        obj = Object.fromEntries(
-            Object.entries(objectData).map(([key, value]) => [key, value.toFixed(2)])
-        )
+      obj = Object.fromEntries(
+      Object.entries(objectData).map(([key, value]) => [key, value.toFixed(2)])
+      )
 
-        function dataFilterDup(array) {
-            return new Set(array).size !== data.length
-        }
+      function dataFilterDup(array) {
+      return new Set(array).size !== data.length
+      }
 
-        if(dataFilterDup(data)){
-            console.warn("array length changed")
-        } else {
-            osc.udpPort.send({
-                address: "/lick/the/toad",
-                args: [
-                    {
-                        type: 's',
-                        value: JSON.stringify(obj)
-                    }
-                ]
-            })
-        }
+      if(dataFilterDup(data)){
+      console.warn("array length changed")
+      } else {
+      osc.udpPort.send({
+      address: "/lick/the/toad",
+      args: [
+      {
+      type: 's',
+      value: JSON.stringify(obj)
+      }
+      ]
+      })
+      }
 
-    })*/
+      })*/
 })
